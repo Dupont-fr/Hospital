@@ -1,0 +1,131 @@
+### ================================================
+### VSCode REST Client - User Service
+### ================================================
+
+### Serveur (ajuster le port si nécessaire)
+@baseUrl = http://localhost:3000/api/users
+@contentType = application/json
+@token = YOUR_JWT_TOKEN_HERE
+
+### ================================================
+### 1. Valider un mot de passe (avant création)
+### ================================================
+POST {{baseUrl}}/auth/validate-password
+Content-Type: {{contentType}}
+
+{
+    "password": "SecurePass123!"
+}
+
+### ================================================
+### 2. Vérifier si un email est disponible
+### ================================================
+POST {{baseUrl}}/auth/check-email
+Content-Type: {{contentType}}
+
+{
+    "email": "dupontdjeague@gmail.com"
+}
+
+### ================================================
+### 3. Créer un ADMINISTRATEUR
+### ================================================
+POST {{baseUrl}}/register/admin
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Administrateur Principal",
+    "email": "dupondjeague@gmail.com",
+    "password": "AdminPass123!"
+}
+
+### 
+### Réponse attendue:
+### {
+###   "success": true,
+###   "message": "Administrateur créé avec succès",
+###   "user": { "_id": "...", "name": "...", "email": "...", "role": "ADMIN" },
+###   "token": "eyJhbGciOiJIUzI1NiIs..."
+### }
+### 
+
+### ================================================
+### 4. Créer un MÉDECIN
+### ================================================
+POST {{baseUrl}}/register
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Dr. Jean Martin",
+    "email": "dr.martin@hospital.com",
+    "password": "MedecinPass123!",
+    "role": "MEDECIN"
+}
+
+### ================================================
+### 5. Créer un SERVICE D'ACCUEIL
+### ================================================
+POST {{baseUrl}}/register
+Content-Type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "Marie Durant",
+    "email": "accueil@hospital.com",
+    "password": "AccueilPass123!",
+    "role": "ACCUEIL"
+}
+
+### ================================================
+### 6. TEST: Email déjà utilisé (erreur)
+### ================================================
+POST {{baseUrl}}/register
+Content-Type: {{contentType}}
+
+{
+    "name": "Autre Utilisateur",
+    "email": "admin@hospital.com",
+    "password": "TestPass123!"
+}
+
+###
+### Réponse attendue (erreur):
+### {
+###   "success": false,
+###   "message": "Cet email est déjà utilisé par un autre utilisateur"
+### }
+###
+
+### ================================================
+### 7. TEST: Mot de passe invalide (erreur)
+### ================================================
+POST {{baseUrl}}/register
+Content-Type: {{contentType}}
+
+{
+    "name": "Test User",
+    "email": "test@hospital.com",
+    "password": "weak"
+}
+
+###
+### Réponse attendue (erreur):
+### {
+###   "success": false,
+###   "message": "Mot de passe invalide",
+###   "errors": [
+###     "Le mot de passe doit contenir au moins 8 caractères",
+###     "Le mot de passe doit contenir au moins un chiffre",
+###     "Le mot de passe doit contenir au moins un caractère spécial"
+###   ]
+### }
+###
+
+### ================================================
+### NOTES:
+### - Le password doit contenir: 8+ chars, 1 chiffre, 1 lettre, 1 spécial
+### - Rôles disponibles: ADMIN, MEDECIN, ACCUEIL
+### - Par défaut: ACCUEIL si role non specifies
+### ================================================
