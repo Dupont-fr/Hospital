@@ -21,11 +21,14 @@ const app = express()
 // Serve static frontend (built files from frontend/dist)
 app.use(express.static(require('path').join(__dirname, '..', 'dist')))
 
-// CORS - restrict to gateway only
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
-  credentials: true,
-}))
+// CORS only needed in development (when user-service is called directly)
+// In production, only the Gateway handles CORS
+if (process.env.NODE_ENV !== 'production') {
+  app.use(cors({
+    origin: process.env.CORS_ORIGIN || '*',
+    credentials: true,
+  }))
+}
 
 // Middleware to parse JSON bodies
 app.use(express.json())
