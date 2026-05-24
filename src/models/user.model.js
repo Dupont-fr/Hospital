@@ -76,10 +76,9 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 
-  // Hospital (reference to Hospital model)
+  // Hospital (free text - user can type any name)
   hospital: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Hospital',
+    type: String,
     default: null,
   },
 

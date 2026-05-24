@@ -121,9 +121,7 @@ class AuthService {
       ]
     }
 
-    const users = await User.find(query)
-      .populate('hospital', 'name')
-      .sort({ createdAt: -1 })
+    const users = await User.find(query).sort({ createdAt: -1 })
     return users
   }
 
