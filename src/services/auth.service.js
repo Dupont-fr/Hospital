@@ -53,7 +53,7 @@ class AuthService {
    * @returns {Object} - Utilisateur créé
    */
   static async register(userData, requirePasswordChange = true) {
-    const { name, email, password, role } = userData
+    const { name, email, password, role, hospital, specialty } = userData
 
     // Vérifier si l'email existe déjà
     const existingUser = await User.findOne({ email })
@@ -72,6 +72,8 @@ class AuthService {
       email,
       password,
       role: role || ROLES.ACCUEIL,
+      hospital: hospital || null,
+      specialty: specialty || null,
       mustChangePassword: requirePasswordChange,
     })
 
@@ -108,7 +110,20 @@ class AuthService {
    * @returns {Array} - Tableau d'utilisateurs
    */
   static async getAllUsers(filters = {}) {
-    const users = await User.find(filters).sort({ createdAt: -1 })
+    const { search, ...otherFilters } = filters
+
+    const query = { ...otherFilters }
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+      ]
+    }
+
+    const users = await User.find(query)
+      .populate('hospital', 'name')
+      .sort({ createdAt: -1 })
     return users
   }
 

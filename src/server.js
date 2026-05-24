@@ -9,6 +9,7 @@ const connectDB = require('./config/db')
 
 // Import routes
 const userRoutes = require('./routes/user.routes')
+const hospitalRoutes = require('./routes/hospital.routes')
 
 /**
  * User Service Server
@@ -51,6 +52,9 @@ app.get('/health', (req, res) => {
 // Mount user routes
 // All routes are prefixed with /api/users when connected to the gateway
 app.use('/', userRoutes)
+
+// Mount hospital routes
+app.use('/', hospitalRoutes)
 
 // SPA catch-all: serve index.html for non-API routes (client-side routing)
 app.get('*', (req, res) => {

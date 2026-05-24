@@ -1,6 +1,33 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 
+const SPECIALTIES = [
+  'Médecine générale',
+  'Pédiatrie',
+  'Cardiologie',
+  'Gastroentérologie',
+  'Ophtalmologie',
+  'Dermatologie',
+  'Gynécologie',
+  'Neurologie',
+  'Psychiatrie',
+  'Radiologie',
+  'Chirurgie générale',
+  'Orthopédie',
+  'Oto-rhino-laryngologie (ORL)',
+  'Pneumologie',
+  'Rhumatologie',
+  'Urologie',
+  'Anesthésiologie',
+  'Oncologie',
+  'Néonatologie',
+  'Endocrinologie',
+  'Hématologie',
+  'Néphrologie',
+  'Médecine d\'urgence',
+  'Médecine interne',
+]
+
 // Define the roles available in the system
 const ROLES = {
   ADMIN: 'ADMIN',
@@ -49,6 +76,20 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
 
+  // Hospital (reference to Hospital model)
+  hospital: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Hospital',
+    default: null,
+  },
+
+  // Medical specialty (for MEDECIN role)
+  specialty: {
+    type: String,
+    enum: [...SPECIALTIES, null],
+    default: null,
+  },
+
   // Timestamp for creation
   createdAt: {
     type: Date,
@@ -89,4 +130,5 @@ userSchema.methods.toJSON = function () {
 module.exports = {
   User: mongoose.model('User', userSchema),
   ROLES,
+  SPECIALTIES,
 }

@@ -8,7 +8,8 @@
     "dev": "node src/server.js",
     "request": "node src/request/rest.js",
     "req": "node src/request/rest.js",
-    "seed": "node src/seed.js"
+    "seed": "node src/seed.js",
+"seed-hospitals": "node src/seed-hospitals.js"
   },
   "author": "Dupont corporation",
   "license": "ISC",

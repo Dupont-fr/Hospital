@@ -103,13 +103,29 @@ class UserController {
    */
   static async register(req, res) {
     try {
-      const { name, email, password, role } = req.body
+      const { name, email, password, role, hospital, specialty } = req.body
 
       // Validate input
       if (!name || !email || !password) {
         return res.status(400).json({
           success: false,
           message: 'Nom, email et mot de passe requis',
+        })
+      }
+
+      // Validate hospital for MEDECIN and ACCUEIL
+      if ((role === 'MEDECIN' || role === 'ACCUEIL') && !hospital) {
+        return res.status(400).json({
+          success: false,
+          message: 'L\'hôpital est requis pour ce rôle',
+        })
+      }
+
+      // Validate specialty for MEDECIN
+      if (role === 'MEDECIN' && !specialty) {
+        return res.status(400).json({
+          success: false,
+          message: 'La spécialité est requise pour un médecin',
         })
       }
 
@@ -131,7 +147,7 @@ class UserController {
       }
 
       // Create user
-      const user = await AuthService.register({ name, email, password, role })
+      const user = await AuthService.register({ name, email, password, role, hospital, specialty })
 
       res.status(201).json({
         success: true,
@@ -152,12 +168,15 @@ class UserController {
    */
   static async getAllUsers(req, res) {
     try {
-      const { role } = req.query
+      const { role, search } = req.query
 
       // Build filters
       const filters = {}
       if (role) {
         filters.role = role
+      }
+      if (search) {
+        filters.search = search
       }
 
       const users = await AuthService.getAllUsers(filters)
@@ -207,7 +226,7 @@ class UserController {
       const updateData = req.body
 
       // Only allow updating certain fields
-      const allowedFields = ['name', 'role']
+      const allowedFields = ['name', 'role', 'hospital', 'specialty']
       const filteredData = {}
 
       for (const field of allowedFields) {
