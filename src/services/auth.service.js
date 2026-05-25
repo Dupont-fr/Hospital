@@ -15,7 +15,7 @@ class AuthService {
    */
   static async login(email, password) {
     // Rechercher l'utilisateur par email
-    const user = await User.findOne({ emailUser }).select('+passwordUser')
+    const user = await User.findOne({ emailUser: email }).select('+passwordUser')
 
     // Vérifier si l'utilisateur existe
     if (!user) {
