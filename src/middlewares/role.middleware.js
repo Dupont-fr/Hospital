@@ -18,7 +18,7 @@ const allowRoles = (...allowedRoles) => {
       }
 
       // Get user's role
-      const userRole = req.user.role
+      const userRole = req.user.roleUser
 
       // Check if user's role is allowed
       const hasPermission = allowedRoles.includes(userRole)

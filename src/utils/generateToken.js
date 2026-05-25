@@ -9,8 +9,8 @@ const generateToken = (user) => {
   // Create payload with user information
   const payload = {
     id: user._id,
-    email: user.email,
-    role: user.role,
+    email: user.emailUser,
+    role: user.roleUser,
   }
 
   // Sign the token with JWT_SECRET and expiration time

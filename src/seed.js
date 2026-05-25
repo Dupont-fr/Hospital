@@ -8,22 +8,22 @@ const { generateToken } = require('./utils/generateToken')
 
 const users = [
   {
-    name: 'Admin Principal',
-    email: 'admin@hospital.com',
-    password: 'Admin123!',
-    role: ROLES.ADMIN,
+    nameUser: 'Admin Principal',
+    emailUser: 'admin@hospital.com',
+    passwordUser: 'Admin123!',
+    roleUser: ROLES.ADMIN,
   },
   {
-    name: 'Dr. Jean Martin',
-    email: 'medecin@hospital.com',
-    password: 'Medecin123!',
-    role: ROLES.MEDECIN,
+    nameUser: 'Dr. Jean Martin',
+    emailUser: 'medecin@hospital.com',
+    passwordUser: 'Medecin123!',
+    roleUser: ROLES.MEDECIN,
   },
   {
-    name: 'Marie Durant',
-    email: 'accueil@hospital.com',
-    password: 'Accueil123!',
-    role: ROLES.ACCUEIL,
+    nameUser: 'Marie Durant',
+    emailUser: 'accueil@hospital.com',
+    passwordUser: 'Accueil123!',
+    roleUser: ROLES.ACCUEIL,
   },
 ]
 
@@ -33,11 +33,11 @@ const seed = async () => {
     console.log('\n🌱 Création des utilisateurs...\n')
 
     for (const userData of users) {
-      const existing = await User.findOne({ email: userData.email })
+      const existing = await User.findOne({ emailUser: userData.emailUser })
 
       if (existing) {
         const token = generateToken(existing)
-        console.log(`⚠️  ${userData.role} existe déjà : ${userData.email}`)
+        console.log(`⚠️  ${userData.roleUser} existe déjà : ${userData.emailUser}`)
         console.log(`   Token: ${token}\n`)
         continue
       }
@@ -46,9 +46,9 @@ const seed = async () => {
       await user.save()
       const token = generateToken(user)
 
-      console.log(`✅ ${userData.role} créé :`)
-      console.log(`   Email: ${userData.email}`)
-      console.log(`   Mot de passe: ${userData.password}`)
+      console.log(`✅ ${userData.roleUser} créé :`)
+      console.log(`   Email: ${userData.emailUser}`)
+      console.log(`   Mot de passe: ${userData.passwordUser}`)
       console.log(`   Token: ${token}\n`)
     }
 

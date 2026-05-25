@@ -1,19 +1,19 @@
 const mongoose = require('mongoose')
 
 const hospitalSchema = new mongoose.Schema({
-  name: {
+  nameHospital: {
     type: String,
     required: [true, 'Le nom de l\'hôpital est requis'],
     unique: true,
     trim: true,
   },
-  services: [{
+  servicesHospital: [{
     type: String,
     trim: true,
   }],
 })
 
-hospitalSchema.index({ name: 1 })
+hospitalSchema.index({ nameHospital: 1 })
 
 module.exports = {
   Hospital: mongoose.model('Hospital', hospitalSchema),

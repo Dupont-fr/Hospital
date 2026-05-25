@@ -8,84 +8,84 @@ const { Hospital } = require('./models/hospital.model')
 
 const hospitals = [
   {
-    name: "Hôpital de District de Dschang",
-    services: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences", "Laboratoire"],
+    nameHospital: "Hôpital de District de Dschang",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences", "Laboratoire"],
   },
   {
-    name: "Hôpital Central de Yaoundé",
-    services: ["Cardiologie", "Neurologie", "Oncologie", "Chirurgie générale", "Radiologie", "Pédiatrie", "Urgences"],
+    nameHospital: "Hôpital Central de Yaoundé",
+    servicesHospital: ["Cardiologie", "Neurologie", "Oncologie", "Chirurgie générale", "Radiologie", "Pédiatrie", "Urgences"],
   },
   {
-    name: "Hôpital Général de Douala",
-    services: ["Médecine interne", "Pédiatrie", "Gynécologie", "Ophtalmologie", "ORL", "Urgences"],
+    nameHospital: "Hôpital Général de Douala",
+    servicesHospital: ["Médecine interne", "Pédiatrie", "Gynécologie", "Ophtalmologie", "ORL", "Urgences"],
   },
   {
-    name: "Hôpital Laquintinie de Douala",
-    services: ["Pédiatrie", "Maternité", "Chirurgie", "Cardiologie", "Dermatologie"],
+    nameHospital: "Hôpital Laquintinie de Douala",
+    servicesHospital: ["Pédiatrie", "Maternité", "Chirurgie", "Cardiologie", "Dermatologie"],
   },
   {
-    name: "Hôpital Régional de Bafoussam",
-    services: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Laboratoire"],
+    nameHospital: "Hôpital Régional de Bafoussam",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Laboratoire"],
   },
   {
-    name: "Hôpital Régional de Bamenda",
-    services: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Urgences"],
+    nameHospital: "Hôpital Régional de Bamenda",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Urgences"],
   },
   {
-    name: "Hôpital Régional de Maroua",
-    services: ["Médecine générale", "Pédiatrie", "Maternité", "Ophtalmologie", "Laboratoire"],
+    nameHospital: "Hôpital Régional de Maroua",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Ophtalmologie", "Laboratoire"],
   },
   {
-    name: "Hôpital Régional de Garoua",
-    services: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Urgences"],
+    nameHospital: "Hôpital Régional de Garoua",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Urgences"],
   },
   {
-    name: "Hôpital de District de Bafang",
-    services: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"],
+    nameHospital: "Hôpital de District de Bafang",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"],
   },
   {
-    name: "Hôpital de District de Mbouda",
-    services: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"],
+    nameHospital: "Hôpital de District de Mbouda",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"],
   },
   {
-    name: "Hôpital de District de Foumban",
-    services: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"],
+    nameHospital: "Hôpital de District de Foumban",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"],
   },
   {
-    name: "Hôpital de District de Nkongsamba",
-    services: ["Médecine générale", "Pédiatrie", "Maternité", "Ophtalmologie"],
+    nameHospital: "Hôpital de District de Nkongsamba",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Ophtalmologie"],
   },
   {
-    name: "Hôpital de District d'Ebolowa",
-    services: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"],
+    nameHospital: "Hôpital de District d'Ebolowa",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"],
   },
   {
-    name: "Hôpital de District de Sangmélima",
-    services: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"],
+    nameHospital: "Hôpital de District de Sangmélima",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"],
   },
   {
-    name: "Hôpital de District de Kribi",
-    services: ["Médecine générale", "Pédiatrie", "Urgences", "Laboratoire"],
+    nameHospital: "Hôpital de District de Kribi",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Urgences", "Laboratoire"],
   },
   {
-    name: "Hôpital de District d'Edéa",
-    services: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"],
+    nameHospital: "Hôpital de District d'Edéa",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"],
   },
   {
-    name: "Hôpital Adventiste de Nanga-Eboko",
-    services: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Ophtalmologie"],
+    nameHospital: "Hôpital Adventiste de Nanga-Eboko",
+    servicesHospital: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Ophtalmologie"],
   },
   {
-    name: "Centre Hospitalier Universitaire (CHU) de Yaoundé",
-    services: ["Cardiologie", "Neurologie", "Oncologie", "Chirurgie cardiaque", "Néonatalogie", "Radiologie", "Pédiatrie"],
+    nameHospital: "Centre Hospitalier Universitaire (CHU) de Yaoundé",
+    servicesHospital: ["Cardiologie", "Neurologie", "Oncologie", "Chirurgie cardiaque", "Néonatalogie", "Radiologie", "Pédiatrie"],
   },
   {
-    name: "Centre Hospitalier Universitaire (CHU) de Douala",
-    services: ["Médecine interne", "Chirurgie générale", "Pédiatrie", "Gynécologie", "Psychiatrie", "Urgences"],
+    nameHospital: "Centre Hospitalier Universitaire (CHU) de Douala",
+    servicesHospital: ["Médecine interne", "Chirurgie générale", "Pédiatrie", "Gynécologie", "Psychiatrie", "Urgences"],
   },
   {
-    name: "Hôpital Militaire de Yaoundé",
-    services: ["Médecine générale", "Chirurgie", "Orthopédie", "Radiologie", "Laboratoire"],
+    nameHospital: "Hôpital Militaire de Yaoundé",
+    servicesHospital: ["Médecine générale", "Chirurgie", "Orthopédie", "Radiologie", "Laboratoire"],
   },
 ]
 
@@ -95,13 +95,13 @@ const seed = async () => {
     console.log('\n🌱 Insertion des hôpitaux...\n')
 
     for (const hospitalData of hospitals) {
-      const existing = await Hospital.findOne({ name: hospitalData.name })
+      const existing = await Hospital.findOne({ nameHospital: hospitalData.nameHospital })
       if (existing) {
-        console.log(`⚠️  Déjà existant : ${hospitalData.name}`)
+        console.log(`⚠️  Déjà existant : ${hospitalData.nameHospital}`)
         continue
       }
       await Hospital.create(hospitalData)
-      console.log(`✅ Ajouté : ${hospitalData.name}`)
+      console.log(`✅ Ajouté : ${hospitalData.nameHospital}`)
     }
 
     console.log(`\n📋 Total : ${hospitals.length} hôpitaux`)

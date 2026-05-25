@@ -6,9 +6,9 @@ class HospitalController {
       const { search } = req.query
       const filter = {}
       if (search) {
-        filter.name = { $regex: search, $options: 'i' }
+        filter.nameHospital = { $regex: search, $options: 'i' }
       }
-      const hospitals = await Hospital.find(filter).sort({ name: 1 })
+      const hospitals = await Hospital.find(filter).sort({ nameHospital: 1 })
       res.status(200).json({
         success: true,
         data: hospitals,
@@ -44,8 +44,8 @@ class HospitalController {
 
   static async create(req, res) {
     try {
-      const { name, services } = req.body
-      const hospital = await Hospital.create({ name, services })
+      const { nameHospital, servicesHospital } = req.body
+      const hospital = await Hospital.create({ nameHospital, servicesHospital })
       res.status(201).json({
         success: true,
         data: hospital,

@@ -28,25 +28,21 @@ const SPECIALTIES = [
   'Médecine interne',
 ]
 
-// Define the roles available in the system
 const ROLES = {
   ADMIN: 'ADMIN',
   MEDECIN: 'MEDECIN',
   ACCUEIL: 'ACCUEIL',
 }
 
-// User Schema
 const userSchema = new mongoose.Schema({
-  // User's full name
-  name: {
+  nameUser: {
     type: String,
     required: [true, 'Name is required'],
     trim: true,
     minlength: [2, 'Name must be at least 2 characters'],
   },
 
-  // User's email (unique identifier)
-  email: {
+  emailUser: {
     type: String,
     required: [true, 'Email is required'],
     unique: true,
@@ -55,77 +51,64 @@ const userSchema = new mongoose.Schema({
     match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
   },
 
-  // User's password (hashed)
-  password: {
+  passwordUser: {
     type: String,
     required: [true, 'Password is required'],
     minlength: [8, 'Password must be at least 8 characters'],
-    select: false, // Exclude password from queries by default
+    select: false,
   },
 
-  // User's role in the system
-  role: {
+  roleUser: {
     type: String,
     enum: ['ADMIN', 'MEDECIN', 'ACCUEIL'],
     default: 'ACCUEIL',
   },
 
-  // Force password change on first login
-  mustChangePassword: {
+  mustChangePasswordUser: {
     type: Boolean,
     default: false,
   },
 
-  // Hospital (free text - user can type any name)
-  hospital: {
+  hospitalUser: {
     type: String,
     default: null,
   },
 
-  // Medical specialty (for MEDECIN role)
-  specialty: {
+  specialtyUser: {
     type: String,
     enum: [...SPECIALTIES, null],
     default: null,
   },
 
-  // Timestamp for creation
-  createdAt: {
+  createdAtUser: {
     type: Date,
     default: Date.now,
   },
 })
 
-// Index for faster queries
-userSchema.index({ email: 1 })
-userSchema.index({ role: 1 })
+userSchema.index({ emailUser: 1 })
+userSchema.index({ roleUser: 1 })
 
-// Pre-save middleware to hash password
 userSchema.pre('save', async function (next) {
-  // Only hash the password if it's modified
-  if (!this.isModified('password')) {
+  if (!this.isModified('passwordUser')) {
     return next()
   }
 
-  // Hash the password with bcrypt
   const salt = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.password, salt)
+  this.passwordUser = await bcrypt.hash(this.passwordUser, salt)
   next()
 })
 
-// Method to compare passwords
 userSchema.methods.comparePassword = async function (candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password)
+  return await bcrypt.compare(candidatePassword, this.passwordUser)
 }
 
-// Method to exclude sensitive fields from JSON
 userSchema.methods.toJSON = function () {
   const obj = this.toObject()
-  delete obj.password
+  delete obj.passwordUser
   return obj
 }
 
-// Export the model and roles
 module.exports = {
   User: mongoose.model('User', userSchema),
   ROLES,

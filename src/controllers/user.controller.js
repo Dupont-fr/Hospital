@@ -12,10 +12,10 @@ class UserController {
    */
   static async login(req, res) {
     try {
-      const { email, password } = req.body
+      const { emailUser, passwordUser } = req.body
 
       // Validate input
-      if (!email || !password) {
+      if (!emailUser || !passwordUser) {
         return res.status(400).json({
           success: false,
           message: 'Email et mot de passe requis',
@@ -23,7 +23,7 @@ class UserController {
       }
 
       // Attempt login
-      const result = await AuthService.login(email, password)
+      const result = await AuthService.login(emailUser, passwordUser)
 
       res.status(200).json({
         success: true,
@@ -45,10 +45,10 @@ class UserController {
    */
   static async registerAdmin(req, res) {
     try {
-      const { name, email, password } = req.body
+      const { nameUser, emailUser, passwordUser } = req.body
 
       // Validate input
-      if (!name || !email || !password) {
+      if (!nameUser || !emailUser || !passwordUser) {
         return res.status(400).json({
           success: false,
           message: 'Nom, email et mot de passe requis',
@@ -57,7 +57,7 @@ class UserController {
 
       // Validate email format
       const emailRegex = /^\S+@\S+\.\S+$/
-      if (!emailRegex.test(email)) {
+      if (!emailRegex.test(emailUser)) {
         return res.status(400).json({
           success: false,
           message: "Format d'email invalide",
@@ -65,7 +65,7 @@ class UserController {
       }
 
       // Validate password length
-      if (password.length < 8) {
+      if (passwordUser.length < 8) {
         return res.status(400).json({
           success: false,
           message: 'Le mot de passe doit contenir au moins 8 caractères',
@@ -74,7 +74,7 @@ class UserController {
 
       // Create admin user with ADMIN role, no forced password change
       const user = await AuthService.register(
-        { name, email, password, role: 'ADMIN' },
+        { nameUser, emailUser, passwordUser, roleUser: 'ADMIN' },
         false,
       )
 
@@ -103,10 +103,10 @@ class UserController {
    */
   static async register(req, res) {
     try {
-      const { name, email, password, role, hospital, specialty } = req.body
+      const { nameUser, emailUser, passwordUser, roleUser, hospitalUser, specialtyUser } = req.body
 
       // Validate input
-      if (!name || !email || !password) {
+      if (!nameUser || !emailUser || !passwordUser) {
         return res.status(400).json({
           success: false,
           message: 'Nom, email et mot de passe requis',
@@ -114,7 +114,7 @@ class UserController {
       }
 
       // Validate hospital for MEDECIN and ACCUEIL
-      if ((role === 'MEDECIN' || role === 'ACCUEIL') && !hospital) {
+      if ((roleUser === 'MEDECIN' || roleUser === 'ACCUEIL') && !hospitalUser) {
         return res.status(400).json({
           success: false,
           message: 'L\'hôpital est requis pour ce rôle',
@@ -122,7 +122,7 @@ class UserController {
       }
 
       // Validate specialty for MEDECIN
-      if (role === 'MEDECIN' && !specialty) {
+      if (roleUser === 'MEDECIN' && !specialtyUser) {
         return res.status(400).json({
           success: false,
           message: 'La spécialité est requise pour un médecin',
@@ -131,7 +131,7 @@ class UserController {
 
       // Validate email format
       const emailRegex = /^\S+@\S+\.\S+$/
-      if (!emailRegex.test(email)) {
+      if (!emailRegex.test(emailUser)) {
         return res.status(400).json({
           success: false,
           message: "Format d'email invalide",
@@ -139,7 +139,7 @@ class UserController {
       }
 
       // Validate password length
-      if (password.length < 8) {
+      if (passwordUser.length < 8) {
         return res.status(400).json({
           success: false,
           message: 'Le mot de passe doit contenir au moins 8 caractères',
@@ -147,7 +147,7 @@ class UserController {
       }
 
       // Create user
-      const user = await AuthService.register({ name, email, password, role, hospital, specialty })
+      const user = await AuthService.register({ nameUser, emailUser, passwordUser, roleUser, hospitalUser, specialtyUser })
 
       res.status(201).json({
         success: true,
@@ -168,12 +168,12 @@ class UserController {
    */
   static async getAllUsers(req, res) {
     try {
-      const { role, search } = req.query
+      const { roleUser, search } = req.query
 
       // Build filters
       const filters = {}
-      if (role) {
-        filters.role = role
+      if (roleUser) {
+        filters.roleUser = roleUser
       }
       if (search) {
         filters.search = search
@@ -226,7 +226,7 @@ class UserController {
       const updateData = req.body
 
       // Only allow updating certain fields
-      const allowedFields = ['name', 'role', 'hospital', 'specialty']
+      const allowedFields = ['nameUser', 'roleUser', 'hospitalUser', 'specialtyUser']
       const filteredData = {}
 
       for (const field of allowedFields) {

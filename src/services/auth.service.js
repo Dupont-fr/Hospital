@@ -15,7 +15,7 @@ class AuthService {
    */
   static async login(email, password) {
     // Rechercher l'utilisateur par email
-    const user = await User.findOne({ email }).select('+password')
+    const user = await User.findOne({ emailUser }).select('+passwordUser')
 
     // Vérifier si l'utilisateur existe
     if (!user) {
@@ -33,7 +33,7 @@ class AuthService {
 
     // Envoyer un email de notification de connexion
     try {
-      await EmailService.sendLoginNotification(user.email, user.name, user.role)
+      await EmailService.sendLoginNotification(user.emailUser, user.nameUser, user.roleUser)
     } catch (emailError) {
       console.log('Note: Email de connexion non envoyé')
     }
@@ -42,7 +42,7 @@ class AuthService {
     return {
       user: user.toJSON(),
       token,
-      mustChangePassword: user.mustChangePassword,
+      mustChangePassword: user.mustChangePasswordUser,
     }
   }
 
@@ -53,28 +53,28 @@ class AuthService {
    * @returns {Object} - Utilisateur créé
    */
   static async register(userData, requirePasswordChange = true) {
-    const { name, email, password, role, hospital, specialty } = userData
+    const { nameUser, emailUser, passwordUser, roleUser, hospitalUser, specialtyUser } = userData
 
     // Vérifier si l'email existe déjà
-    const existingUser = await User.findOne({ email })
+    const existingUser = await User.findOne({ emailUser })
     if (existingUser) {
       throw new Error('Cet email est déjà utilisé')
     }
 
     // Valider le rôle si fourni
-    if (role && !Object.values(ROLES).includes(role)) {
+    if (roleUser && !Object.values(ROLES).includes(roleUser)) {
       throw new Error('Rôle invalide')
     }
 
     // Créer le nouvel utilisateur
     const user = new User({
-      name,
-      email,
-      password,
-      role: role || ROLES.ACCUEIL,
-      hospital: hospital || null,
-      specialty: specialty || null,
-      mustChangePassword: requirePasswordChange,
+      nameUser,
+      emailUser,
+      passwordUser,
+      roleUser: roleUser || ROLES.ACCUEIL,
+      hospitalUser: hospitalUser || null,
+      specialtyUser: specialtyUser || null,
+      mustChangePasswordUser: requirePasswordChange,
     })
 
     // Sauvegarder dans la base de données
@@ -82,7 +82,7 @@ class AuthService {
 
     // Envoyer un email avec le mot de passe provisoire
     try {
-      await EmailService.sendTemporaryPassword(email, name, password, user.role)
+      await EmailService.sendTemporaryPassword(emailUser, nameUser, passwordUser, user.roleUser)
     } catch (emailError) {
       console.log('Note: Email de bienvenue non envoyé')
     }
@@ -116,12 +116,12 @@ class AuthService {
 
     if (search) {
       query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
+        { nameUser: { $regex: search, $options: 'i' } },
+        { emailUser: { $regex: search, $options: 'i' } },
       ]
     }
 
-    const users = await User.find(query).sort({ createdAt: -1 })
+    const users = await User.find(query).sort({ createdAtUser: -1 })
     return users
   }
 
@@ -133,12 +133,12 @@ class AuthService {
    */
   static async updateUser(userId, updateData) {
     // Ne pas autoriser la mise à jour du mot de passe par cette méthode
-    const { password, ...validUpdates } = updateData
+    const { passwordUser, ...validUpdates } = updateData
 
     // Si le rôle est mis à jour, le valider
     if (
-      validUpdates.role &&
-      !Object.values(ROLES).includes(validUpdates.role)
+      validUpdates.roleUser &&
+      !Object.values(ROLES).includes(validUpdates.roleUser)
     ) {
       throw new Error('Rôle invalide')
     }
@@ -178,7 +178,7 @@ class AuthService {
    * @returns {Object} - Utilisateur mis à jour
    */
   static async changePassword(userId, currentPassword, newPassword) {
-    const user = await User.findById(userId).select('+password')
+    const user = await User.findById(userId).select('+passwordUser')
 
     if (!user) {
       throw new Error('Utilisateur non trouvé')
@@ -189,13 +189,13 @@ class AuthService {
       throw new Error('Mot de passe actuel incorrect')
     }
 
-    user.password = newPassword
-    user.mustChangePassword = false
+    user.passwordUser = newPassword
+    user.mustChangePasswordUser = false
     await user.save()
 
     // Envoyer un email de confirmation
     try {
-      await EmailService.sendPasswordChangedConfirmation(user.email, user.name)
+      await EmailService.sendPasswordChangedConfirmation(user.emailUser, user.nameUser)
     } catch (emailError) {
       console.log('Note: Email de confirmation non envoyé')
     }
