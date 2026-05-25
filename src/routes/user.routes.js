@@ -36,36 +36,33 @@ router.post('/login', UserController.login)
 // Protected Routes
 // ======================
 
-// All routes below require authentication
-router.use(authenticate)
-
 /**
  * POST /change-password
  * Change own password
  * Access: Authenticated user
  */
-router.post('/change-password', UserController.changePassword)
+router.post('/change-password', authenticate, UserController.changePassword)
 
 /**
  * POST /register
  * Create a new user
  * Access: ADMIN only
  */
-router.post('/register', requireAdmin, UserController.register)
+router.post('/register', authenticate, requireAdmin, UserController.register)
 
 /**
  * GET /users
  * Get all users
  * Access: ADMIN only
  */
-router.get('/users', requireAdmin, UserController.getAllUsers)
+router.get('/users', authenticate, requireAdmin, UserController.getAllUsers)
 
 /**
  * GET /users/:id
  * Get user by ID
  * Access: ADMIN and the user themselves
  */
-router.get('/users/:id', allowRoles('ADMIN', 'MEDECIN'), UserController.getUserById)
+router.get('/users/:id', authenticate, allowRoles('ADMIN', 'MEDECIN'), UserController.getUserById)
 
 /**
  * PUT /users/:id
@@ -74,6 +71,7 @@ router.get('/users/:id', allowRoles('ADMIN', 'MEDECIN'), UserController.getUserB
  */
 router.put(
   '/users/:id',
+  authenticate,
   requireAdmin,
   UserController.updateUser,
 )
@@ -83,6 +81,6 @@ router.put(
  * Delete user
  * Access: ADMIN only
  */
-router.delete('/users/:id', requireAdmin, UserController.deleteUser)
+router.delete('/users/:id', authenticate, requireAdmin, UserController.deleteUser)
 
 module.exports = router
