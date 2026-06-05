@@ -7,86 +7,25 @@ const connectDB = require('./config/db')
 const { Hospital } = require('./models/hospital.model')
 
 const hospitals = [
-  {
-    nameHospital: "Hôpital de District de Dschang",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences", "Laboratoire"],
-  },
-  {
-    nameHospital: "Hôpital Central de Yaoundé",
-    servicesHospital: ["Cardiologie", "Neurologie", "Oncologie", "Chirurgie générale", "Radiologie", "Pédiatrie", "Urgences"],
-  },
-  {
-    nameHospital: "Hôpital Général de Douala",
-    servicesHospital: ["Médecine interne", "Pédiatrie", "Gynécologie", "Ophtalmologie", "ORL", "Urgences"],
-  },
-  {
-    nameHospital: "Hôpital Laquintinie de Douala",
-    servicesHospital: ["Pédiatrie", "Maternité", "Chirurgie", "Cardiologie", "Dermatologie"],
-  },
-  {
-    nameHospital: "Hôpital Régional de Bafoussam",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Laboratoire"],
-  },
-  {
-    nameHospital: "Hôpital Régional de Bamenda",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Urgences"],
-  },
-  {
-    nameHospital: "Hôpital Régional de Maroua",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Ophtalmologie", "Laboratoire"],
-  },
-  {
-    nameHospital: "Hôpital Régional de Garoua",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Urgences"],
-  },
-  {
-    nameHospital: "Hôpital de District de Bafang",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"],
-  },
-  {
-    nameHospital: "Hôpital de District de Mbouda",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"],
-  },
-  {
-    nameHospital: "Hôpital de District de Foumban",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"],
-  },
-  {
-    nameHospital: "Hôpital de District de Nkongsamba",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Ophtalmologie"],
-  },
-  {
-    nameHospital: "Hôpital de District d'Ebolowa",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"],
-  },
-  {
-    nameHospital: "Hôpital de District de Sangmélima",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"],
-  },
-  {
-    nameHospital: "Hôpital de District de Kribi",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Urgences", "Laboratoire"],
-  },
-  {
-    nameHospital: "Hôpital de District d'Edéa",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"],
-  },
-  {
-    nameHospital: "Hôpital Adventiste de Nanga-Eboko",
-    servicesHospital: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Ophtalmologie"],
-  },
-  {
-    nameHospital: "Centre Hospitalier Universitaire (CHU) de Yaoundé",
-    servicesHospital: ["Cardiologie", "Neurologie", "Oncologie", "Chirurgie cardiaque", "Néonatalogie", "Radiologie", "Pédiatrie"],
-  },
-  {
-    nameHospital: "Centre Hospitalier Universitaire (CHU) de Douala",
-    servicesHospital: ["Médecine interne", "Chirurgie générale", "Pédiatrie", "Gynécologie", "Psychiatrie", "Urgences"],
-  },
-  {
-    nameHospital: "Hôpital Militaire de Yaoundé",
-    servicesHospital: ["Médecine générale", "Chirurgie", "Orthopédie", "Radiologie", "Laboratoire"],
-  },
+  { nameHospital: "Bafoussam Regional Hospital", servicesHospital: ["Médecine générale", "Pédiatrie", "Chirurgie", "Maternité", "Urgences", "Laboratoire"] },
+  { nameHospital: "Hôpital de District de Bafang", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"] },
+  { nameHospital: "Hôpital de District de Bandja", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité"] },
+  { nameHospital: "Hôpital de District de Bamendjou", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité"] },
+  { nameHospital: "Hôpital de District de Bangangté", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"] },
+  { nameHospital: "Hôpital de District de Bandjoun", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"] },
+  { nameHospital: "Hôpital de District de Bangourain", servicesHospital: ["Médecine générale", "Pédiatrie"] },
+  { nameHospital: "Hôpital de District de Batcham", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité"] },
+  { nameHospital: "Hôpital de District de Dschang", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences", "Laboratoire"] },
+  { nameHospital: "Hôpital de District de Foumban", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"] },
+  { nameHospital: "Hôpital de District de Foumbot", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité"] },
+  { nameHospital: "Hôpital de District de Galim", servicesHospital: ["Médecine générale", "Pédiatrie"] },
+  { nameHospital: "Hôpital de District de Kékem", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"] },
+  { nameHospital: "Hôpital de District de Kouoptamo", servicesHospital: ["Médecine générale", "Pédiatrie"] },
+  { nameHospital: "Hôpital de District de Malantouen", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité"] },
+  { nameHospital: "Hôpital de District de Massangam", servicesHospital: ["Médecine générale", "Pédiatrie"] },
+  { nameHospital: "Hôpital de District de Mbouda", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Urgences"] },
+  { nameHospital: "Hôpital de District de Penka Michel", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité"] },
+  { nameHospital: "Hôpital de District de Santchou", servicesHospital: ["Médecine générale", "Pédiatrie", "Maternité", "Laboratoire"] },
 ]
 
 const seed = async () => {

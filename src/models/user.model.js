@@ -86,7 +86,6 @@ const userSchema = new mongoose.Schema({
   },
 })
 
-userSchema.index({ emailUser: 1 })
 userSchema.index({ roleUser: 1 })
 
 userSchema.pre('save', async function (next) {

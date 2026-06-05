@@ -13,8 +13,6 @@ const hospitalSchema = new mongoose.Schema({
   }],
 })
 
-hospitalSchema.index({ nameHospital: 1 })
-
 module.exports = {
   Hospital: mongoose.model('Hospital', hospitalSchema),
 }
