@@ -11,6 +11,9 @@ const generateToken = (user) => {
     id: user._id,
     email: user.emailUser,
     role: user.roleUser,
+    nameUser: user.nameUser,
+    hospitalUser: user.hospitalUser || null,
+    specialtyUser: user.specialtyUser || null,
   }
 
   // Sign the token with JWT_SECRET and expiration time

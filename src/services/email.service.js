@@ -94,11 +94,7 @@ class EmailService {
           </div>
           <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login" style="display: block; text-align: center; background: #2563eb; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px;">Se connecter à MediSys</a>
         </div>
-        <div style="background: #f8fafc; padding: 20px 24px; border-top: 1px solid #e2e8f0;">
-          <p style="color: #94a3b8; font-size: 12px; margin: 0; text-align: center;">
-            Cet email a été envoyé automatiquement par MediSys. Merci de ne pas y répondre.
-          </p>
-        </div>
+        ${this.getFooterContact()}
       </div>
     `
 
@@ -118,16 +114,100 @@ class EmailService {
             <span style="font-size: 32px;">✓</span>
           </div>
           <h2 style="color: #1e293b; margin: 0 0 8px; font-size: 20px;">Mot de passe mis à jour</h2>
-          <p style="color: #475569; line-height: 1.6; margin: 0;">
+          <p style="color: #475569; line-height: 1.6; margin: 0 0 16px;">
             Bonjour ${name},<br>
             Votre mot de passe a été modifié avec succès.
           </p>
+          <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; text-align: left;">
+            <p style="color: #991b1b; margin: 0; font-size: 13px; font-weight: 500;">
+              ⚠️ Si vous n'êtes pas à l'origine de cette modification, contactez immédiatement votre administrateur à
+              <a href="mailto:${this.getSupportEmail()}" style="color: #dc2626; font-weight: 600;">${this.getSupportEmail()}</a>
+            </p>
+          </div>
         </div>
-        <div style="background: #f8fafc; padding: 20px 24px; border-top: 1px solid #e2e8f0;">
-          <p style="color: #94a3b8; font-size: 12px; margin: 0; text-align: center;">
-            Si vous n'êtes pas à l'origine de cette modification, contactez immédiatement votre administrateur.
+        ${this.getFooterContact()}
+      </div>
+    `
+
+    return this.sendEmail(email, name, subject, htmlContent)
+  }
+
+  static getSupportEmail() {
+    return process.env.SUPPORT_EMAIL || process.env.BREVO_SENDER_EMAIL || 'support@medisys.com'
+  }
+
+  static getFooterContact() {
+    const supportEmail = this.getSupportEmail()
+    return `
+      <div style="background: #f8fafc; padding: 20px 24px; border-top: 1px solid #e2e8f0;">
+        <p style="color: #94a3b8; font-size: 12px; margin: 0 0 8px; text-align: center;">
+          Cet email est envoyé automatiquement par MediSys.
+        </p>
+        <p style="color: #94a3b8; font-size: 12px; margin: 0; text-align: center;">
+          En cas de doute ou pour signaler une activité suspecte, écrivez à
+          <a href="mailto:${supportEmail}" style="color: #2563eb; text-decoration: underline;">${supportEmail}</a>
+        </p>
+      </div>
+    `
+  }
+
+  static async sendResetRequestNotification(adminEmail, adminName, userName, userEmail) {
+    const subject = 'Demande de réinitialisation de mot de passe - MediSys'
+    const htmlContent = `
+      <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+        <div style="background: linear-gradient(135deg, #2563eb, #1e40af); padding: 32px 24px; text-align: center;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 600;">MediSys</h1>
+          <p style="color: #93c5fd; margin: 4px 0 0; font-size: 14px;">Gestion Hospitalière</p>
+        </div>
+        <div style="padding: 32px 24px;">
+          <h2 style="color: #1e293b; margin: 0 0 8px; font-size: 20px;">Bonjour ${adminName},</h2>
+          <p style="color: #475569; line-height: 1.6; margin: 0 0 20px;">
+            L'utilisateur <strong>${userName}</strong> (${userEmail}) a demandé une réinitialisation de mot de passe.
           </p>
+          <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+            <p style="color: #92400e; margin: 0 0 8px; font-size: 13px;">
+              Connectez-vous à l'application pour approuver ou rejeter cette demande dans la section
+              <strong>Paramètres → Demandes de réinitialisation</strong>.
+            </p>
+          </div>
+          <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin/password-resets" style="display: block; text-align: center; background: #2563eb; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px;">Gérer les demandes</a>
         </div>
+        ${this.getFooterContact()}
+      </div>
+    `
+
+    return this.sendEmail(adminEmail, adminName, subject, htmlContent)
+  }
+
+  static async sendPasswordResetEmail(email, name, tempPassword) {
+    const subject = 'Mot de passe réinitialisé - MediSys'
+    const htmlContent = `
+      <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+        <div style="background: linear-gradient(135deg, #2563eb, #1e40af); padding: 32px 24px; text-align: center;">
+          <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 600;">MediSys</h1>
+          <p style="color: #93c5fd; margin: 4px 0 0; font-size: 14px;">Gestion Hospitalière</p>
+        </div>
+        <div style="padding: 32px 24px;">
+          <h2 style="color: #1e293b; margin: 0 0 8px; font-size: 20px;">Bonjour ${name},</h2>
+          <p style="color: #475569; line-height: 1.6; margin: 0 0 20px;">
+            Un administrateur a réinitialisé votre mot de passe sur MediSys.
+          </p>
+          <div style="background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+            <p style="color: #92400e; margin: 0 0 8px; font-size: 14px; font-weight: 600;">🔑 Votre nouveau mot de passe temporaire</p>
+            <div style="background: #ffffff; border: 1px dashed #d97706; border-radius: 6px; padding: 12px; text-align: center; font-family: 'Courier New', monospace; font-size: 18px; font-weight: 700; color: #92400e; letter-spacing: 2px;">${tempPassword}</div>
+            <p style="color: #92400e; margin: 12px 0 0; font-size: 13px;">
+              Pour des raisons de sécurité, vous devrez changer ce mot de passe lors de votre prochaine connexion.
+            </p>
+          </div>
+          <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+            <p style="color: #991b1b; margin: 0; font-size: 13px; font-weight: 500;">
+              ⚠️ Si vous n'êtes pas à l'origine de cette demande de réinitialisation, contactez immédiatement votre administrateur à
+              <a href="mailto:${this.getSupportEmail()}" style="color: #dc2626; font-weight: 600;">${this.getSupportEmail()}</a>
+            </p>
+          </div>
+          <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login" style="display: block; text-align: center; background: #2563eb; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px;">Se connecter à MediSys</a>
+        </div>
+        ${this.getFooterContact()}
       </div>
     `
 
@@ -161,15 +241,14 @@ class EmailService {
               <td style="padding: 10px 14px; background: #f8fafc; border-radius: 0 8px 8px 0; color: #1e293b; font-size: 14px; font-weight: 600;">${timeStr}</td>
             </tr>
           </table>
-          <p style="color: #94a3b8; font-size: 13px; margin: 16px 0 0;">
-            Si vous ne reconnaissez pas cette connexion, veuillez contacter votre administrateur immédiatement.
-          </p>
+          <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin-top: 16px;">
+            <p style="color: #991b1b; margin: 0; font-size: 13px; font-weight: 500;">
+              ⚠️ Si vous ne reconnaissez pas cette connexion, contactez immédiatement votre administrateur à
+              <a href="mailto:${this.getSupportEmail()}" style="color: #dc2626; font-weight: 600;">${this.getSupportEmail()}</a>
+            </p>
+          </div>
         </div>
-        <div style="background: #f8fafc; padding: 20px 24px; border-top: 1px solid #e2e8f0;">
-          <p style="color: #94a3b8; font-size: 12px; margin: 0; text-align: center;">
-            Cet email est envoyé automatiquement à chaque connexion sur votre compte MediSys.
-          </p>
-        </div>
+        ${this.getFooterContact()}
       </div>
     `
 

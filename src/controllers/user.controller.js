@@ -1,4 +1,5 @@
 const AuthService = require('../services/auth.service')
+const PasswordResetService = require('../services/passwordReset.service')
 const { generateToken } = require('../utils/generateToken')
 
 /**
@@ -283,6 +284,109 @@ class UserController {
       })
     } catch (error) {
       res.status(404).json({
+        success: false,
+        message: error.message,
+      })
+    }
+  }
+
+  /**
+   * POST /forgot-password
+   * Request password reset
+   */
+  static async forgotPassword(req, res) {
+    try {
+      const { emailUser } = req.body
+
+      if (!emailUser) {
+        return res.status(400).json({
+          success: false,
+          message: 'Email requis',
+        })
+      }
+
+      const result = await PasswordResetService.requestReset(emailUser)
+
+      res.status(200).json({
+        success: true,
+        message: result.message,
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      })
+    }
+  }
+
+  /**
+   * GET /password-reset-requests
+   * Get all password reset requests (Admin only)
+   */
+  static async getPasswordResetRequests(req, res) {
+    try {
+      const { filter } = req.query
+      let requests
+
+      if (filter === 'pending') {
+        requests = await PasswordResetService.getPendingRequests()
+      } else {
+        requests = await PasswordResetService.getAllRequests()
+      }
+
+      res.status(200).json({
+        success: true,
+        data: requests,
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      })
+    }
+  }
+
+  /**
+   * POST /approve-reset/:id
+   * Approve password reset request (Admin only)
+   */
+  static async approveReset(req, res) {
+    try {
+      const { id } = req.params
+      const adminId = req.user._id
+
+      const result = await PasswordResetService.approveRequest(id, adminId)
+
+      res.status(200).json({
+        success: true,
+        message: result.message,
+        data: { emailUser: result.emailUser },
+      })
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      })
+    }
+  }
+
+  /**
+   * POST /reject-reset/:id
+   * Reject password reset request (Admin only)
+   */
+  static async rejectReset(req, res) {
+    try {
+      const { id } = req.params
+      const adminId = req.user._id
+
+      await PasswordResetService.rejectRequest(id, adminId)
+
+      res.status(200).json({
+        success: true,
+        message: 'Demande rejetée',
+      })
+    } catch (error) {
+      res.status(400).json({
         success: false,
         message: error.message,
       })

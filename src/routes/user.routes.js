@@ -32,6 +32,13 @@ router.post('/register/admin', UserController.registerAdmin)
  */
 router.post('/login', UserController.login)
 
+/**
+ * POST /forgot-password
+ * Request password reset
+ * Access: Public
+ */
+router.post('/forgot-password', UserController.forgotPassword)
+
 // ======================
 // Protected Routes
 // ======================
@@ -82,5 +89,26 @@ router.put(
  * Access: ADMIN only
  */
 router.delete('/users/:id', authenticate, requireAdmin, UserController.deleteUser)
+
+/**
+ * GET /password-reset-requests
+ * Get all password reset requests
+ * Access: ADMIN only
+ */
+router.get('/password-reset-requests', authenticate, requireAdmin, UserController.getPasswordResetRequests)
+
+/**
+ * POST /approve-reset/:id
+ * Approve password reset request
+ * Access: ADMIN only
+ */
+router.post('/approve-reset/:id', authenticate, requireAdmin, UserController.approveReset)
+
+/**
+ * POST /reject-reset/:id
+ * Reject password reset request
+ * Access: ADMIN only
+ */
+router.post('/reject-reset/:id', authenticate, requireAdmin, UserController.rejectReset)
 
 module.exports = router
