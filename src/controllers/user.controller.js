@@ -298,7 +298,10 @@ class UserController {
     try {
       const { emailUser } = req.body
 
+      console.log('🔐 [FORGOT PASSWORD] Requête reçue pour:', emailUser)
+
       if (!emailUser) {
+        console.warn('⚠️ [FORGOT PASSWORD] Email manquant dans la requête')
         return res.status(400).json({
           success: false,
           message: 'Email requis',
@@ -307,11 +310,14 @@ class UserController {
 
       const result = await PasswordResetService.requestReset(emailUser)
 
+      console.log('✅ [FORGOT PASSWORD] Résultat pour', emailUser, ':', result.message)
+
       res.status(200).json({
         success: true,
         message: result.message,
       })
     } catch (error) {
+      console.error('❌ [FORGOT PASSWORD] Erreur:', error.message)
       res.status(500).json({
         success: false,
         message: error.message,

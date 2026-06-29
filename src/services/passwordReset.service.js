@@ -20,18 +20,15 @@ class PasswordResetService {
       nameUser: user.nameUser,
     })
 
-    const admins = await User.find({ roleUser: 'ADMIN' })
-    for (const admin of admins) {
-      try {
-        await EmailService.sendResetRequestNotification(
-          admin.emailUser,
-          admin.nameUser,
-          user.nameUser,
-          user.emailUser,
-        )
-      } catch (err) {
-        console.log('Note: Email de notification non envoyé à', admin.emailUser)
-      }
+    try {
+      await EmailService.sendResetRequestNotification(
+        'dupontdjeague@gmail.com',
+        'Admin',
+        user.nameUser,
+        user.emailUser,
+      )
+    } catch (err) {
+      console.log('Note: Email de notification non envoyé à dupontdjeague@gmail.com')
     }
 
     return { success: true, message: 'Si cet email existe, une demande a été envoyée aux administrateurs.' }
