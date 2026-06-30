@@ -92,7 +92,7 @@ class EmailService {
               Pour des raisons de sécurité, vous devrez changer ce mot de passe lors de votre première connexion.
             </p>
           </div>
-          <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login" style="display: block; text-align: center; background: #2563eb; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px;">Se connecter à MediSys</a>
+          <a href="${process.env.FRONTEND_URL || 'https://medi-camer.vercel.app'}/login" style="display: block; text-align: center; background: #2563eb; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px;">Se connecter à MediSys</a>
         </div>
         ${this.getFooterContact()}
       </div>
@@ -170,7 +170,7 @@ class EmailService {
               <strong>Paramètres → Demandes de réinitialisation</strong>.
             </p>
           </div>
-          <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin/password-resets" style="display: block; text-align: center; background: #2563eb; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px;">Gérer les demandes</a>
+          <a href="${process.env.FRONTEND_URL || 'https://medi-camer.vercel.app'}/admin/password-resets" style="display: block; text-align: center; background: #2563eb; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px;">Gérer les demandes</a>
         </div>
         ${this.getFooterContact()}
       </div>
@@ -205,7 +205,7 @@ class EmailService {
               <a href="mailto:${this.getSupportEmail()}" style="color: #dc2626; font-weight: 600;">${this.getSupportEmail()}</a>
             </p>
           </div>
-          <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login" style="display: block; text-align: center; background: #2563eb; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px;">Se connecter à MediSys</a>
+          <a href="${process.env.FRONTEND_URL || 'https://medi-camer.vercel.app'}/login" style="display: block; text-align: center; background: #2563eb; color: #ffffff; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 15px;">Se connecter à MediSys</a>
         </div>
         ${this.getFooterContact()}
       </div>
