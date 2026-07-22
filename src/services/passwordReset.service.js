@@ -2,6 +2,43 @@ const PasswordResetRequest = require('../models/passwordResetRequest.model')
 const { User } = require('../models/user.model')
 const EmailService = require('./email.service')
 const crypto = require('crypto')
+const http = require('http')
+
+function notifyConsultationsService(notification) {
+  const host = process.env.CONSULTATION_SERVICE_URL || 'http://localhost:3003'
+  const internalKey = process.env.INTERNAL_API_KEY || 'medisys-internal-key-2026'
+  const url = new URL('/notifications', host)
+  const postData = JSON.stringify(notification)
+
+  const req = http.request({
+    hostname: url.hostname,
+    port: url.port,
+    path: url.pathname,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(postData),
+      'X-Internal-Key': internalKey,
+    },
+  }, (res) => {
+    let body = ''
+    res.on('data', (chunk) => body += chunk)
+    res.on('end', () => {
+      if (res.statusCode === 201) {
+        console.log('✅ Notification de réinitialisation envoyée')
+      } else {
+        console.log('⚠️ Notification non envoyée:', res.statusCode, body)
+      }
+    })
+  })
+
+  req.on('error', (err) => {
+    console.log('⚠️ Impossible de contacter consultations-service:', err.message)
+  })
+
+  req.write(postData)
+  req.end()
+}
 
 class PasswordResetService {
   static async requestReset(email) {
@@ -18,6 +55,14 @@ class PasswordResetService {
     await PasswordResetRequest.create({
       emailUser: user.emailUser,
       nameUser: user.nameUser,
+    })
+
+    notifyConsultationsService({
+      type: 'password_reset',
+      title: 'Demande de réinitialisation',
+      message: `${user.nameUser} (${user.emailUser}) demande une réinitialisation de mot de passe`,
+      link: '/admin/password-resets',
+      data: { email: user.emailUser, name: user.nameUser },
     })
 
     try {
