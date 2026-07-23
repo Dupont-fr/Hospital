@@ -1,6 +1,6 @@
 # MediSys — Hospital (user-service)
 
-Service d'authentification et de gestion des utilisateurs et hôpitaux pour MediSys.
+Service d'authentification et de gestion des utilisateurs et hôpitaux pour MediSys. Envoie des notifications aux consultations-service via appels inter-services.
 
 ## Stack
 
@@ -9,6 +9,7 @@ Service d'authentification et de gestion des utilisateurs et hôpitaux pour Medi
 - **Base de données** : MongoDB (via Mongoose) — MongoDB Atlas
 - **Authentification** : JWT (jsonwebtoken) + bcryptjs
 - **Emails** : Brevo API
+- **Inter-services** : HTTP (notifications vers consultations-service)
 
 ## Démarrage
 
@@ -31,8 +32,10 @@ Port par défaut : `5001`
 | `JWT_EXPIRES_IN` | Durée du token (ex: 7d) |
 | `BREVO_API_KEY` | Clé API Brevo |
 | `BREVO_SENDER_EMAIL` | Expéditeur des emails |
-| `FRONTEND_URL` | URL du frontend |
+| `FRONTEND_URL` | URL du frontend (production: `https://medi-camer.vercel.app`) |
 | `SUPPORT_EMAIL` | Email de support |
+| `INTERNAL_API_KEY` | Clé pour appels inter-services (doit matcher consultations-service) |
+| `CONSULTATION_SERVICE_URL` | URL du consultations-service (ex: `http://localhost:5003`) |
 
 ## Scripts
 
@@ -86,6 +89,7 @@ Port par défaut : `5001`
 - Validation mot de passe (8+ car., maj., min., chiffre, spécial)
 - Workflow de réinitialisation de mot de passe avec validation admin
 - Notification email à chaque connexion
+- Notifications push vers consultations-service (appels inter-services)
 - Gestion des hôpitaux (CRUD complet)
 - 24 spécialités médicales prédéfinies
 
